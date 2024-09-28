@@ -6,88 +6,86 @@ namespace BugTests
     public class UnitTest1
     {
         [TestMethod]
-        public void Test_InitialState_IsLocked()
+        public void Test_InitialState_IsOpen()
         {
-            var bugPro = new BugPro();
-            Assert.AreEqual(BugPro.State.Locked, bugPro.CurrentState);
+            var bug = new Bug(Bug.State.Open);
+            Assert.AreEqual(Bug.State.Open, bug.getState());
         }
 
         [TestMethod]
-        public void Test_InsertCoin_ChangesStateToUnlocked()
+        public void Test_Assign_ChangesStateToAssigned()
         {
-            var bugPro = new BugPro();
-            bugPro.InsertCoin();
-            Assert.AreEqual(BugPro.State.Unlocked, bugPro.CurrentState);
+            var bug = new Bug(Bug.State.Open);
+            bug.Assign();
+            Assert.AreEqual(Bug.State.Assigned, bug.getState());
         }
 
         [TestMethod]
-        public void Test_Push_InLockedState_DoesNotChangeState()
+        public void Test_Close_InAssignedState_ChangesStateToClosed()
         {
-            var bugPro = new BugPro();
-            bugPro.Push();
-            Assert.AreEqual(BugPro.State.Locked, bugPro.CurrentState);
+            var bug = new Bug(Bug.State.Assigned);
+            bug.Close();
+            Assert.AreEqual(Bug.State.Closed, bug.getState());
         }
 
         [TestMethod]
-        public void Test_Push_InUnlockedState_ChangesStateToLocked()
+        public void Test_Assign_InClosedState_ChangesStateToAssigned()
         {
-            var bugPro = new BugPro();
-            bugPro.InsertCoin();
-            bugPro.Push();
-            Assert.AreEqual(BugPro.State.Locked, bugPro.CurrentState);
+            var bug = new Bug(Bug.State.Closed);
+            bug.Assign();
+            Assert.AreEqual(Bug.State.Assigned, bug.getState());
         }
 
         [TestMethod]
-        public void Test_MultipleCoins_DoesNotChangeStateFromUnlocked()
+        public void Test_Defer_InAssignedState_ChangesStateToDefered()
         {
-            var bugPro = new BugPro();
-            bugPro.InsertCoin();
-            bugPro.InsertCoin();
-            Assert.AreEqual(BugPro.State.Unlocked, bugPro.CurrentState);
+            var bug = new Bug(Bug.State.Assigned);
+            bug.Defer();
+            Assert.AreEqual(Bug.State.Defered, bug.getState());
         }
 
         [TestMethod]
-        public void Test_MultiplePushes_DoesNotChangeStateFromLocked()
+        public void Test_Assign_InDeferedState_ChangesStateToAssigned()
         {
-            var bugPro = new BugPro();
-            bugPro.Push();
-            bugPro.Push();
-            Assert.AreEqual(BugPro.State.Locked, bugPro.CurrentState);
+            var bug = new Bug(Bug.State.Defered);
+            bug.Assign();
+            Assert.AreEqual(Bug.State.Assigned, bug.getState());
         }
 
         [TestMethod]
-        public void Test_TransitionSequence_LockedToUnlockedAndBack()
+        public void Test_ReAssign_InOpenState_ChangesStateToAssigned()
         {
-            var bugPro = new BugPro();
-            bugPro.InsertCoin();
-            Assert.AreEqual(BugPro.State.Unlocked, bugPro.CurrentState);
-            bugPro.Push();
-            Assert.AreEqual(BugPro.State.Locked, bugPro.CurrentState);
+            var bug = new Bug(Bug.State.Open);
+            bug.Assign();
+            Assert.AreEqual(Bug.State.Assigned, bug.getState());
+            bug.Assign();
+            Assert.AreEqual(Bug.State.Assigned, bug.getState());
         }
 
         [TestMethod]
-        public void Test_FireInvalidTrigger_DoesNotThrowException()
+        public void Test_Defer_InClosedState_DoesNotChangeState()
         {
-            var bugPro = new BugPro();
-            bugPro.Push();
-            Assert.AreEqual(BugPro.State.Locked, bugPro.CurrentState);
+            var bug = new Bug(Bug.State.Closed);
+            bug.Defer();
+            Assert.AreEqual(Bug.State.Closed, bug.getState());
         }
 
         [TestMethod]
-        public void Test_InsertCoin_WhenAlreadyUnlocked_DoesNothing()
+        public void Test_ClosedToAssigned_ReopenBug()
         {
-            var bugPro = new BugPro();
-            bugPro.InsertCoin();
-            bugPro.InsertCoin();
-            Assert.AreEqual(BugPro.State.Unlocked, bugPro.CurrentState);
+            var bug = new Bug(Bug.State.Closed);
+            bug.Assign();
+            Assert.AreEqual(Bug.State.Assigned, bug.getState());
         }
 
         [TestMethod]
-        public void Test_Push_WithoutInsertingCoin_RemainsLocked()
+        public void Test_OpenToDefered_AssignmentNotPossibleUntilAssigned()
         {
-            var bugPro = new BugPro();
-            bugPro.Push();
-            Assert.AreEqual(BugPro.State.Locked, bugPro.CurrentState);
+            var bug = new Bug(Bug.State.Open);
+            bug.Defer();
+            Assert.AreEqual(Bug.State.Defered, bug.getState());
+            bug.Assign();
+            Assert.AreEqual(Bug.State.Assigned, bug.getState());
         }
     }
 }
