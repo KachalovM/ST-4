@@ -90,3 +90,4 @@ namespace BugTests
             Assert.AreEqual(BugPro.State.Locked, bugPro.CurrentState);
         }
     }
+}
