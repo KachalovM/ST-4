@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BugPro", "BugPro\BugPro.csproj", "{5F05A5C7-915B-41DD-9AE5-81E6A56AFFA0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestsProj", "TestsProj\TestsProj.csproj", "{18591EE3-AA63-4289-8A87-92E5883F8EEC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestsProj", "BugTests\BugTests.csproj", "{18591EE3-AA63-4289-8A87-92E5883F8EEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
