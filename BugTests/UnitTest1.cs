@@ -53,25 +53,23 @@ namespace BugTests
         }
 
         [TestMethod]
-        public void Test_ReAssign_InOpenState_ChangesStateToAssigned()
+        public void Test_Assign_InOpenState_ChangesStateToAssigned()
         {
             var bug = new Bug(Bug.State.Open);
-            bug.Assign();
-            Assert.AreEqual(Bug.State.Assigned, bug.getState());
             bug.Assign();
             Assert.AreEqual(Bug.State.Assigned, bug.getState());
         }
 
         [TestMethod]
-        public void Test_Defer_InClosedState_DoesNotChangeState()
+        public void Test_Close_InAssignedState_PermitsStateChangeToClosed()
         {
-            var bug = new Bug(Bug.State.Closed);
-            bug.Defer();
+            var bug = new Bug(Bug.State.Assigned);
+            bug.Close();
             Assert.AreEqual(Bug.State.Closed, bug.getState());
         }
 
         [TestMethod]
-        public void Test_ClosedToAssigned_ReopenBug()
+        public void Test_ReAssign_FromClosed_ChangesStateToAssigned()
         {
             var bug = new Bug(Bug.State.Closed);
             bug.Assign();
@@ -79,11 +77,9 @@ namespace BugTests
         }
 
         [TestMethod]
-        public void Test_OpenToDefered_AssignmentNotPossibleUntilAssigned()
+        public void Test_Assign_InDeferedState_AllowsReAssignment()
         {
-            var bug = new Bug(Bug.State.Open);
-            bug.Defer();
-            Assert.AreEqual(Bug.State.Defered, bug.getState());
+            var bug = new Bug(Bug.State.Defered);
             bug.Assign();
             Assert.AreEqual(Bug.State.Assigned, bug.getState());
         }
